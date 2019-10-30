@@ -9,14 +9,15 @@ const app = express();              // Do Not Edit
 // ----
 
 /** - Challenges - *
-********************/ 
+********************/
 
 /** 1) Install and require `helmet` */
 
 // [Helmet](https://github.com/helmetjs/helmet) helps you secure your
 // Express apps by setting constious HTTP headers.
 // Install the package, then require it.
-
+const helmet = require('helmet');
+app.use(helmet());
 
 
 /** 2) Hide potentially dangerous information - `helmet.hidePoweredBy()` */
@@ -30,7 +31,7 @@ const app = express();              // Do Not Edit
 // people off. e.g. `helmet.hidePoweredBy({ setTo: 'PHP 4.2.0' })`
 
 // Use `helmet.hidePoweredBy()``
-
+app.use(helmet.hidePoweredBy());
 
 
 /** 3) Mitigate the risk of clickjacking - `helmet.frameguard()` */
@@ -45,8 +46,8 @@ const app = express();              // Do Not Edit
 
 // We don't need our app to be framed, so you should use `helmet.frameguard()`
 // passing to it the configuration object `{action: 'deny'}`
+app.use(helmet.frameguard({ action: 'deny' }));
 
- 
 
 /** 4) Mitigate the risk of XSS - `helmet.xssFilter()` */
 
@@ -68,7 +69,7 @@ const app = express();              // Do Not Edit
 // It still has limited support.
 
 // Use `helmet.xssFilter()`
-
+app.use(helmet.xssFilter());
 
 
 /** 5) Avoid inferring the response MIME type - `helmet.noSniff()` */
@@ -81,6 +82,7 @@ const app = express();              // Do Not Edit
 // instructing the browser to not bypass the provided `Content-Type`.
 
 // Use `helmet.noSniff()`
+app.use(helmet.noSniff());
 
 
 
@@ -94,6 +96,7 @@ const app = express();              // Do Not Edit
 // to prevent IE users from executing downloads in the *trusted* site's context.
 
 // Use `helmet.ieNoOpen()`
+app.use(helmet.ieNoOpen());
 
 
 
@@ -113,7 +116,8 @@ const app = express();              // Do Not Edit
 // set the field `force` to `true` in the config object. To not alter hyperdev security 
 // policy we will intercept and restore the header, after inspecting it for testing.
 
-const ninetyDaysInMilliseconds = 90*24*60*60*1000;
+const ninetyDaysInMilliseconds = 90 * 24 * 60 * 60 * 1000;
+app.use(helmet.hsts({maxAge: ninetyDaysInMilliseconds, force: true}));
 
 
 //**Note**:
@@ -177,7 +181,7 @@ const ninetyDaysInMilliseconds = 90*24*60*60*1000;
 
 
 
-/** TIP: */ 
+/** TIP: */
 
 // `app.use(helmet())` will automatically include all the middleware
 // presented above, except `noCache()`, and `contentSecurityPolicy()`,
