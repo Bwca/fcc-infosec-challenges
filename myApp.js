@@ -136,6 +136,7 @@ app.use(helmet.hsts({maxAge: ninetyDaysInMilliseconds, force: true}));
 // DNS prefetching, at the cost of a performance penalty.
 
 // Use `helmet.dnsPrefetchControl()`
+app.use(helmet.dnsPrefetchControl());
 
 
 
@@ -148,7 +149,7 @@ app.use(helmet.hsts({maxAge: ninetyDaysInMilliseconds, force: true}));
 // use this option only when there is a real need.
 
 // Use helmet.noCache()
-
+app.use(helmet.noCache());
 
 
 /** 10) Content Security Policy - `helmet.contentSecurityPolicy()` */
